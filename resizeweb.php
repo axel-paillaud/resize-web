@@ -22,6 +22,10 @@ function getFileExtension(string $filename) {
     return $ext;
 }
 
+mkdir("./output", 0775);
+mkdir("./output/avif", 0775);
+mkdir("./output/original", 0775);
+
 for ($i = 1; $i < sizeof($argv); $i++)
 {
     $userImage = $argv[$i];
@@ -40,40 +44,52 @@ for ($i = 1; $i < sizeof($argv); $i++)
     }
 
     $image->adaptiveResizeImage(1920, 0);
-    $image->writeImage("output-1920." . $fileExtension);
+    $image->writeImage("./output/original/output-1920." . $fileExtension);
+    echo "Write output-1920." . $fileExtension . " in ./output/original/\n";
     $cloneImage = $image->clone();
     $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("output-1920.avif");
+    $cloneImage->writeImage("./output/avif/output-1920.avif");
+    echo "Write output-1920.avif in ./output/avif/\n";
 
     $image->adaptiveResizeImage(1536, 0);
-    $image->writeImage("output-1536." . $fileExtension);
+    $image->writeImage("./output/original/output-1536." . $fileExtension);
+    echo "Write output-1536." . $fileExtension . " in ./output/original/\n";
     $cloneImage = $image->clone();
     $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("output-1536.avif");
+    $cloneImage->writeImage("./output/avif/output-1536.avif");
+    echo "Write output-1536.avif in ./output/avif/\n";
 
     $image->adaptiveResizeImage(1280, 0);
-    $image->writeImage("output-1280." . $fileExtension);
+    $image->writeImage("./output/original/output-1280." . $fileExtension);
+    echo "Write output-1280." . $fileExtension . " in ./output/original/\n";
     $cloneImage = $image->clone();
     $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("output-1280.avif");
+    $cloneImage->writeImage("./output/avif/output-1280.avif");
+    echo "Write output-1280.avif in ./output/avif/\n";
 
     $image->adaptiveResizeImage(1024, 0);
-    $image->writeImage("output-1024." . $fileExtension);
+    $image->writeImage("./output/original/output-1024." . $fileExtension);
+    echo "Write output-1024." . $fileExtension . " in ./output/original/\n";
     $cloneImage = $image->clone();
     $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("output-1024.avif");
+    $cloneImage->writeImage("./output/avif/output-1024.avif");
+    echo "Write output-1024.avif in ./output/avif/\n";
 
     $image->adaptiveResizeImage(768, 0);
-    $image->writeImage("output-768." . $fileExtension);
+    $image->writeImage("./output/original/output-768." . $fileExtension);
+    echo "Write output-768." . $fileExtension . " in ./output/original/\n";
     $cloneImage = $image->clone();
     $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("output-768.avif");
+    $cloneImage->writeImage("./output/avif/output-768.avif");
+    echo "Write output-768.avif in ./output/avif/\n";
 
     $image->adaptiveResizeImage(640, 0);
-    $image->writeImage("output-640." . $fileExtension);
+    $image->writeImage("./output/original/output-640." . $fileExtension);
+    echo "Write output-640." . $fileExtension . " in ./output/original/\n";
     $cloneImage = $image->clone();
     $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("output-640.avif");
+    $cloneImage->writeImage("./output/avif/output-640.avif");
+    echo "Write output-640.avif in ./output/avif/\n";
 
     $image->destroy();
 }
