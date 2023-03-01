@@ -21,8 +21,6 @@ else
     $nameFile = "output";
 }
 
-echo $nameFile;
-
 for ($i = $argsIndex; $i < sizeof($argv); $i++)
 {
     if (!file_exists($argv[$i]))
@@ -43,17 +41,12 @@ function resizeImg($image, int $size, string $nameFile, string $fileExtension) {
     echo "Write $nameFile-$size.$fileExtension in ./output/original/\n";
 }
 
-function convertImg() {
-
+function convertImg($image, int $size, string $format, string $nameFile) {
+    $cloneImage = $image->clone();
+    $cloneImage->setImageFormat($format);
+    $cloneImage->writeImage("./output/avif/$nameFile-$size.avif");
+    echo "Write $nameFile-$size.avif in ./output/avif/\n";
 }
-
-$image->adaptiveResizeImage(1920, 0);
-$image->writeImage("./output/original/output-1920." . $fileExtension);
-echo "Write output-1920." . $fileExtension . " in ./output/original/\n";
-$cloneImage = $image->clone();
-$cloneImage->setImageFormat("AVIF");
-$cloneImage->writeImage("./output/avif/output-1920.avif");
-echo "Write output-1920.avif in ./output/avif/\n";
 
 // create directories to organise output. if cannot create dir, throw err and return
 if (!mkdir("./output/avif", 0775, true)) {
@@ -82,53 +75,23 @@ for ($i = $argsIndex; $i < sizeof($argv); $i++)
         }
     }
 
-    $image->adaptiveResizeImage(1920, 0);
-    $image->writeImage("./output/original/output-1920." . $fileExtension);
-    echo "Write output-1920." . $fileExtension . " in ./output/original/\n";
-    $cloneImage = $image->clone();
-    $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("./output/avif/output-1920.avif");
-    echo "Write output-1920.avif in ./output/avif/\n";
+    resizeImg($image, 1920, $nameFile, $fileExtension);
+    convertImg($image, 1920, "AVIF", $nameFile);
 
-    $image->adaptiveResizeImage(1536, 0);
-    $image->writeImage("./output/original/output-1536." . $fileExtension);
-    echo "Write output-1536." . $fileExtension . " in ./output/original/\n";
-    $cloneImage = $image->clone();
-    $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("./output/avif/output-1536.avif");
-    echo "Write output-1536.avif in ./output/avif/\n";
+    resizeImg($image, 1536, $nameFile, $fileExtension);
+    convertImg($image, 1536, "AVIF", $nameFile);
 
-    $image->adaptiveResizeImage(1280, 0);
-    $image->writeImage("./output/original/output-1280." . $fileExtension);
-    echo "Write output-1280." . $fileExtension . " in ./output/original/\n";
-    $cloneImage = $image->clone();
-    $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("./output/avif/output-1280.avif");
-    echo "Write output-1280.avif in ./output/avif/\n";
+    resizeImg($image, 1280, $nameFile, $fileExtension);
+    convertImg($image, 1280, "AVIF", $nameFile);
 
-    $image->adaptiveResizeImage(1024, 0);
-    $image->writeImage("./output/original/output-1024." . $fileExtension);
-    echo "Write output-1024." . $fileExtension . " in ./output/original/\n";
-    $cloneImage = $image->clone();
-    $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("./output/avif/output-1024.avif");
-    echo "Write output-1024.avif in ./output/avif/\n";
+    resizeImg($image, 1024, $nameFile, $fileExtension);
+    convertImg($image, 1024, "AVIF", $nameFile);
 
-    $image->adaptiveResizeImage(768, 0);
-    $image->writeImage("./output/original/output-768." . $fileExtension);
-    echo "Write output-768." . $fileExtension . " in ./output/original/\n";
-    $cloneImage = $image->clone();
-    $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("./output/avif/output-768.avif");
-    echo "Write output-768.avif in ./output/avif/\n";
+    resizeImg($image, 768, $nameFile, $fileExtension);
+    convertImg($image, 768, "AVIF", $nameFile);
 
-    $image->adaptiveResizeImage(640, 0);
-    $image->writeImage("./output/original/output-640." . $fileExtension);
-    echo "Write output-640." . $fileExtension . " in ./output/original/\n";
-    $cloneImage = $image->clone();
-    $cloneImage->setImageFormat("AVIF");
-    $cloneImage->writeImage("./output/avif/output-640.avif");
-    echo "Write output-640.avif in ./output/avif/\n";
+    resizeImg($image, 640, $nameFile, $fileExtension);
+    convertImg($image, 640, "AVIF", $nameFile);
 
     $image->destroy();
 }
