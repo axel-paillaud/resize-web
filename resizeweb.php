@@ -10,13 +10,11 @@ if (!isset($argv[1]) || empty($argv[1]))
 
 if ($argv[1] === "-n")
 {
-    $checkUserNameFile = true;
     $nameFile = $argv[2];
     $argsIndex = 3; // if we have filename, start check if file exist only at index 3 of args
 }
 else
 {
-    $checkUserNameFile = false;
     $argsIndex = 1;
     $nameFile = "output";
 }
