@@ -21,13 +21,10 @@ else
     $nameFile = "output";
 }
 
-for ($i = $argsIndex; $i < sizeof($argv); $i++)
+if (!file_exists($argv[$argsIndex]))
 {
-    if (!file_exists($argv[$i]))
-    {
-        echo "Error : The file " . $argv[$i] . " does not exist\n";
-        return 2;
-    }
+    echo "Error : The file " . $argv[$argsIndex] . " does not exist\n";
+    return 2;
 }
 
 function getFileExtension(string $filename) {
@@ -58,42 +55,37 @@ if (!mkdir("./output/original", 0775)) {
     return;
 }
 
-for ($i = $argsIndex; $i < sizeof($argv); $i++)
-{
-    $userImage = $argv[$i];
-    $fileExtension = getFileExtension(($userImage));
+$userImage = $argv[$argsIndex];
+$fileExtension = getFileExtension(($userImage));
 
-    $image = new Imagick($userImage);
-    $imageWidth = $image->getImageWidth();
+$image = new Imagick($userImage);
+$imageWidth = $image->getImageWidth();
 
-    // resize image work best when we go smaller and smaller
-    if ($imageWidth > 3000) {
-        $reminder = ($imageWidth - 2000) / 5;
-        for ($i = 0; $i < 6; $i++) {
-            $image->adaptiveResizeImage($imageWidth, 0);
-            $imageWidth = $imageWidth - $reminder;
-        }
+// resize image work best when we go smaller and smaller
+if ($imageWidth > 3000) {
+    $reminder = ($imageWidth - 2000) / 5;
+    for ($i = 0; $i < 6; $i++) {
+        $image->adaptiveResizeImage($imageWidth, 0);
+        $imageWidth = $imageWidth - $reminder;
     }
-
-    resizeImg($image, 1920, $nameFile, $fileExtension);
-    convertImg($image, 1920, "AVIF", $nameFile);
-
-    resizeImg($image, 1536, $nameFile, $fileExtension);
-    convertImg($image, 1536, "AVIF", $nameFile);
-
-    resizeImg($image, 1280, $nameFile, $fileExtension);
-    convertImg($image, 1280, "AVIF", $nameFile);
-
-    resizeImg($image, 1024, $nameFile, $fileExtension);
-    convertImg($image, 1024, "AVIF", $nameFile);
-
-    resizeImg($image, 768, $nameFile, $fileExtension);
-    convertImg($image, 768, "AVIF", $nameFile);
-
-    resizeImg($image, 640, $nameFile, $fileExtension);
-    convertImg($image, 640, "AVIF", $nameFile);
-
-    $image->destroy();
 }
 
+resizeImg($image, 1920, $nameFile, $fileExtension);
+convertImg($image, 1920, "AVIF", $nameFile);
 
+resizeImg($image, 1536, $nameFile, $fileExtension);
+convertImg($image, 1536, "AVIF", $nameFile);
+
+resizeImg($image, 1280, $nameFile, $fileExtension);
+convertImg($image, 1280, "AVIF", $nameFile);
+
+resizeImg($image, 1024, $nameFile, $fileExtension);
+convertImg($image, 1024, "AVIF", $nameFile);
+
+resizeImg($image, 768, $nameFile, $fileExtension);
+convertImg($image, 768, "AVIF", $nameFile);
+
+resizeImg($image, 640, $nameFile, $fileExtension);
+convertImg($image, 640, "AVIF", $nameFile);
+
+$image->destroy();
