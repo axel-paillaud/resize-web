@@ -8,6 +8,8 @@ if (!isset($argv[1]) || empty($argv[1]))
     return 1;
 }
 
+if ($argv[1] === "-n")
+
 for ($i = 0; $i < sizeof($argv); $i++)
 {
     if (!file_exists($argv[$i]))
@@ -22,9 +24,15 @@ function getFileExtension(string $filename) {
     return $ext;
 }
 
-mkdir("./output", 0775);
-mkdir("./output/avif", 0775);
-mkdir("./output/original", 0775);
+// create directories to organise output. if cannot create dir, throw err and return
+if (!mkdir("./output/avif", 0775, true)) {
+    echo "Failed to create directories ...\n";
+    return;
+}
+if (!mkdir("./output/original", 0775)) {
+    echo "Failed to create directories ...\n";
+    return;
+}
 
 for ($i = 1; $i < sizeof($argv); $i++)
 {
