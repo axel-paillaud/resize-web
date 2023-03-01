@@ -9,8 +9,21 @@ if (!isset($argv[1]) || empty($argv[1]))
 }
 
 if ($argv[1] === "-n")
+{
+    $checkUserNameFile = true;
+    $nameFile = $argv[2];
+    $argsIndex = 3; // if we have filename, start check if file exist only at index 3 of args
+}
+else
+{
+    $checkUserNameFile = false;
+    $argsIndex = 1;
+    $nameFile = "output";
+}
 
-for ($i = 0; $i < sizeof($argv); $i++)
+echo $nameFile;
+
+for ($i = $argsIndex; $i < sizeof($argv); $i++)
 {
     if (!file_exists($argv[$i]))
     {
@@ -24,6 +37,24 @@ function getFileExtension(string $filename) {
     return $ext;
 }
 
+function resizeImg($image, int $size, string $nameFile, string $fileExtension) {
+    $image->adaptiveResizeImage($size, 0);
+    $image->writeImage("./output/original/$nameFile-$size.$fileExtension");
+    echo "Write $nameFile-$size.$fileExtension in ./output/original/\n";
+}
+
+function convertImg() {
+
+}
+
+$image->adaptiveResizeImage(1920, 0);
+$image->writeImage("./output/original/output-1920." . $fileExtension);
+echo "Write output-1920." . $fileExtension . " in ./output/original/\n";
+$cloneImage = $image->clone();
+$cloneImage->setImageFormat("AVIF");
+$cloneImage->writeImage("./output/avif/output-1920.avif");
+echo "Write output-1920.avif in ./output/avif/\n";
+
 // create directories to organise output. if cannot create dir, throw err and return
 if (!mkdir("./output/avif", 0775, true)) {
     echo "Failed to create directories ...\n";
@@ -34,7 +65,7 @@ if (!mkdir("./output/original", 0775)) {
     return;
 }
 
-for ($i = 1; $i < sizeof($argv); $i++)
+for ($i = $argsIndex; $i < sizeof($argv); $i++)
 {
     $userImage = $argv[$i];
     $fileExtension = getFileExtension(($userImage));
