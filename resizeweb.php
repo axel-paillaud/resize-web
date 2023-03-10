@@ -32,7 +32,7 @@ function getFileExtension(string $filename) {
 
 function resizeImg($image, int $size, string $nameFile, string $fileExtension) {
     $cloneImage = $image->clone();
-    $cloneImage->adaptiveResizeImage($size, 0);
+    $cloneImage->resizeImage($size, 0, imagick::FILTER_LANCZOS, 0.5);
     $cloneImage->writeImage("./output/original/$nameFile-$size.$fileExtension");
     echo "Write $nameFile-$size.$fileExtension in ./output/original/\n";
     return $cloneImage;
