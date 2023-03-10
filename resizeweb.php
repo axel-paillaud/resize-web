@@ -31,8 +31,9 @@ function getFileExtension(string $filename) {
 }
 
 function resizeImg($image, int $size, string $nameFile, string $fileExtension) {
-    $image->adaptiveResizeImage($size, 0);
-    $image->writeImage("./output/original/$nameFile-$size.$fileExtension");
+    $cloneImage = $image->clone();
+    $cloneImage->adaptiveResizeImage($size, 0);
+    $cloneImage->writeImage("./output/original/$nameFile-$size.$fileExtension");
     echo "Write $nameFile-$size.$fileExtension in ./output/original/\n";
 }
 
@@ -43,6 +44,11 @@ function convertImg($image, int $size, string $format, string $nameFile) {
     echo "Write $nameFile-$size.avif in ./output/avif/\n";
 }
 
+$userImage = $argv[$argsIndex];
+$fileExtension = getFileExtension(($userImage));
+
+$image = new Imagick($userImage);
+
 // create directories to organise output. if cannot create dir, throw err and return
 if (!mkdir("./output/avif", 0775, true)) {
     echo "Failed to create directories ...\n";
@@ -51,21 +57,6 @@ if (!mkdir("./output/avif", 0775, true)) {
 if (!mkdir("./output/original", 0775)) {
     echo "Failed to create directories ...\n";
     return;
-}
-
-$userImage = $argv[$argsIndex];
-$fileExtension = getFileExtension(($userImage));
-
-$image = new Imagick($userImage);
-$imageWidth = $image->getImageWidth();
-
-// resize image work best when we go smaller and smaller
-if ($imageWidth > 3000) {
-    $reminder = ($imageWidth - 2000) / 5;
-    for ($i = 0; $i < 6; $i++) {
-        $image->adaptiveResizeImage($imageWidth, 0);
-        $imageWidth = $imageWidth - $reminder;
-    }
 }
 
 resizeImg($image, 1920, $nameFile, $fileExtension);
