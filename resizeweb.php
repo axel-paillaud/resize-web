@@ -35,12 +35,12 @@ function resizeImg($image, int $size, string $nameFile, string $fileExtension) {
     $cloneImage->adaptiveResizeImage($size, 0);
     $cloneImage->writeImage("./output/original/$nameFile-$size.$fileExtension");
     echo "Write $nameFile-$size.$fileExtension in ./output/original/\n";
+    return $cloneImage;
 }
 
 function convertImg($image, int $size, string $format, string $nameFile) {
-    $cloneImage = $image->clone();
-    $cloneImage->setImageFormat($format);
-    $cloneImage->writeImage("./output/avif/$nameFile-$size.avif");
+    $image->setImageFormat($format);
+    $image->writeImage("./output/avif/$nameFile-$size.avif");
     echo "Write $nameFile-$size.avif in ./output/avif/\n";
 }
 
@@ -59,22 +59,22 @@ if (!mkdir("./output/original", 0775)) {
     return;
 }
 
-resizeImg($image, 1920, $nameFile, $fileExtension);
-convertImg($image, 1920, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 1920, $nameFile, $fileExtension);
+convertImg($resizedImage, 1920, "AVIF", $nameFile);
 
-resizeImg($image, 1536, $nameFile, $fileExtension);
-convertImg($image, 1536, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 1536, $nameFile, $fileExtension);
+convertImg($resizedImage, 1536, "AVIF", $nameFile);
 
-resizeImg($image, 1280, $nameFile, $fileExtension);
-convertImg($image, 1280, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 1280, $nameFile, $fileExtension);
+convertImg($resizedImage, 1280, "AVIF", $nameFile);
 
-resizeImg($image, 1024, $nameFile, $fileExtension);
-convertImg($image, 1024, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 1024, $nameFile, $fileExtension);
+convertImg($resizedImage, 1024, "AVIF", $nameFile);
 
-resizeImg($image, 768, $nameFile, $fileExtension);
-convertImg($image, 768, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 768, $nameFile, $fileExtension);
+convertImg($resizedImage, 768, "AVIF", $nameFile);
 
-resizeImg($image, 640, $nameFile, $fileExtension);
-convertImg($image, 640, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 640, $nameFile, $fileExtension);
+convertImg($resizedImage, 640, "AVIF", $nameFile);
 
 $image->destroy();
