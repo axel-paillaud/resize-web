@@ -10,13 +10,15 @@ if (!isset($argv[1]) || empty($argv[1]))
 
 if ($argv[1] === "-n")
 {
-    $nameFile = $argv[2];
+    $fileName = $argv[2];
+    $dirName = $argv[2];
     $argsIndex = 3; // if we have filename, start check if file exist only at index 3 of args
 }
 else
 {
     $argsIndex = 1;
-    $nameFile = "output";
+    $fileName = "output";
+    $dirName = "output";
 }
 
 if (!file_exists($argv[$argsIndex]))
@@ -30,18 +32,20 @@ function getFileExtension(string $filename) {
     return $ext;
 }
 
-function resizeImg($image, int $size, string $nameFile, string $fileExtension) {
+function resizeImg($image, int $size, string $fileName, string $fileExtension) {
+    global $dirName;
     $cloneImage = $image->clone();
     $cloneImage->resizeImage($size, 0, imagick::FILTER_LANCZOS, 0.5);
-    $cloneImage->writeImage("./output/original/$nameFile-$size.$fileExtension");
-    echo "Write $nameFile-$size.$fileExtension in ./output/original/\n";
+    $cloneImage->writeImage("./$dirName/original/$fileName-$size.$fileExtension");
+    echo "Write $fileName-$size.$fileExtension in ./$dirName/original/\n";
     return $cloneImage;
 }
 
-function convertImg($image, int $size, string $format, string $nameFile) {
+function convertImg($image, int $size, string $format, string $fileName) {
+    global $dirName;
     $image->setImageFormat($format);
-    $image->writeImage("./output/avif/$nameFile-$size.avif");
-    echo "Write $nameFile-$size.avif in ./output/avif/\n";
+    $image->writeImage("./$dirName/avif/$fileName-$size.avif");
+    echo "Write $fileName-$size.avif in ./$dirName/avif/\n";
 }
 
 $userImage = $argv[$argsIndex];
@@ -50,31 +54,31 @@ $fileExtension = getFileExtension(($userImage));
 $image = new Imagick($userImage);
 
 // create directories to organise output. if cannot create dir, throw err and return
-if (!mkdir("./output/avif", 0775, true)) {
+if (!mkdir("./$dirName/avif", 0775, true)) {
     echo "Failed to create directories ...\n";
     return;
 }
-if (!mkdir("./output/original", 0775)) {
+if (!mkdir("./$dirName/original", 0775)) {
     echo "Failed to create directories ...\n";
     return;
 }
 
-$resizedImage = resizeImg($image, 1920, $nameFile, $fileExtension);
-convertImg($resizedImage, 1920, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 1920, $fileName, $fileExtension);
+convertImg($resizedImage, 1920, "AVIF", $fileName);
 
-$resizedImage = resizeImg($image, 1536, $nameFile, $fileExtension);
-convertImg($resizedImage, 1536, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 1536, $fileName, $fileExtension);
+convertImg($resizedImage, 1536, "AVIF", $fileName);
 
-$resizedImage = resizeImg($image, 1280, $nameFile, $fileExtension);
-convertImg($resizedImage, 1280, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 1280, $fileName, $fileExtension);
+convertImg($resizedImage, 1280, "AVIF", $fileName);
 
-$resizedImage = resizeImg($image, 1024, $nameFile, $fileExtension);
-convertImg($resizedImage, 1024, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 1024, $fileName, $fileExtension);
+convertImg($resizedImage, 1024, "AVIF", $fileName);
 
-$resizedImage = resizeImg($image, 768, $nameFile, $fileExtension);
-convertImg($resizedImage, 768, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 768, $fileName, $fileExtension);
+convertImg($resizedImage, 768, "AVIF", $fileName);
 
-$resizedImage = resizeImg($image, 640, $nameFile, $fileExtension);
-convertImg($resizedImage, 640, "AVIF", $nameFile);
+$resizedImage = resizeImg($image, 640, $fileName, $fileExtension);
+convertImg($resizedImage, 640, "AVIF", $fileName);
 
 $image->destroy();
