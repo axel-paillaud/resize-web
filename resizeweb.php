@@ -43,6 +43,7 @@ function resizeImg($image, int $size, string $fileName, string $fileExtension) {
 
 function convertImg($image, int $size, string $format, string $fileName) {
     global $dirName;
+    $image->setOption('quality', '80');
     $image->setImageFormat($format);
     $image->writeImage("./$dirName/avif/$fileName-$size.avif");
     echo "Write $fileName-$size.avif in ./$dirName/avif/\n";
